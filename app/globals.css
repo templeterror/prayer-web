@@ -1,26 +1,215 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---- Iqama brand theme (see DESIGN.md) ---- */
+@theme {
+  --color-green-900: #0b2f2b;
+  --color-green-800: #0e3b36;
+  --color-green-700: #13534b;
+  --color-green-600: #1e4a3f;
+
+  --color-amber-700: #8f5207;
+  --color-amber-600: #cf7f1d;
+  --color-amber-500: #e89a2c;
+  --color-amber-400: #ffb546;
+  --color-amber-300: #ffc95e;
+
+  --color-bronze-600: #a86e33;
+
+  /* Light theme: warm cream surfaces, deep-green ink */
+  --color-cream: #faf4e8;
+  --color-cream-muted: #efe6d3;
+  --color-ink: #0b2f2b;
+
+  --font-serif: var(--font-lora), serif;
+  --font-sans: var(--font-raleway), ui-sans-serif, system-ui, sans-serif;
+
+  --tracking-eyebrow: 0.25em;
+
+  --max-width-content: 1120px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #faf4e8;
+  color: var(--color-green-800);
+  font-family: var(--font-sans);
+}
+
+/* ---- Mobile-only scroll-snap (Instagram-Stories feel), <640px only ----
+   Desktop is intentionally untouched: every rule lives behind this query and
+   the .snap-panel utility is a no-op above 640px. */
+@media (max-width: 639px) {
+  html {
+    /* Mandatory vertical snap so a swipe always lands cleanly on the next
+       panel, never half-way between two. (keeps scroll-behavior: smooth above) */
+    scroll-snap-type: y mandatory;
+  }
+  body {
+    /* Kill the rubber-band bounce at the very top/bottom — without this,
+       overscroll re-triggers snap and the end panels feel sticky. */
+    overscroll-behavior-y: none;
+  }
+  /* Opt-in: applied to each full-screen section. */
+  .snap-panel {
+    scroll-snap-align: start; /* snap so the panel's top aligns to viewport top */
+    scroll-snap-stop: always; /* can't skip a panel with one fast flick */
+    /* svh (NOT vh/dvh): stable height WITH the toolbar showing, and it does not
+       resize when the keyboard opens — so focusing the form never lurches the page.
+       min-height (not height) lets a tall panel grow rather than clip its content. */
+    min-height: 100svh;
+  }
+}
+
+/* Hero background: warm cream wash + soft bright-gold glow arc (from the logo) */
+.hero-bg {
+  background:
+    radial-gradient(60% 50% at 50% 30%, rgba(255, 181, 70, 0.18) 0%, rgba(255, 181, 70, 0) 60%),
+    radial-gradient(circle at 50% 35%, #fffaf0 0%, #faf4e8 55%, #f3ead6 100%);
+}
+
+.amber-text-gradient {
+  background: linear-gradient(90deg, #b56a14 0%, #e8902a 50%, #b56a14 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cta-amber {
+  background: linear-gradient(180deg, #ffc95e 0%, #ffb546 100%);
+  box-shadow: 0 0 24px rgba(255, 181, 70, 0.4);
+}
+.cta-amber:hover {
+  background: linear-gradient(180deg, #ffd574 0%, #ffc95e 100%);
+}
+
+/* The bright-gold arc motif from the logo */
+.arc {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 520px;
+  max-width: 80vw;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 181, 70, 0) 0%, #ffb546 50%, rgba(255, 181, 70, 0) 100%);
+  filter: blur(0.3px);
+  opacity: 0.95;
+}
+.arc::after {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 201, 94, 0) 0%, rgba(255, 201, 94, 0.55) 50%, rgba(255, 201, 94, 0) 100%);
+  filter: blur(8px);
+}
+
+/* Reveal on scroll (ease-out, ≤300ms). Hidden only once JS marks the page ready,
+   so content is always visible if JS is slow or disabled. */
+.js-ready .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+.js-ready .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Brand-styled range slider (missed-prayers calculator) */
+.prayer-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-green-800) 18%, transparent);
+  cursor: pointer;
+}
+.prayer-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffc95e 0%, #ffb546 100%);
+  border: 2px solid #faf4e8;
+  box-shadow: 0 1px 6px rgba(255, 181, 70, 0.5);
+  cursor: pointer;
+}
+.prayer-slider::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffc95e 0%, #ffb546 100%);
+  border: 2px solid #faf4e8;
+  box-shadow: 0 1px 6px rgba(255, 181, 70, 0.5);
+  cursor: pointer;
+}
+.prayer-slider:focus-visible {
+  outline: 2px solid var(--color-amber-600);
+  outline-offset: 4px;
+}
+
+/* Mobile affordance: taller track, larger thumb, no page-scroll while dragging */
+.prayer-slider-lg {
+  height: 12px;
+  touch-action: none;
+}
+.prayer-slider-lg::-webkit-slider-thumb {
+  width: 32px;
+  height: 32px;
+}
+.prayer-slider-lg::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+}
+
+.glow-pulse {
+  animation: glow 7s ease-in-out infinite;
+}
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Gentle entrance for content that mounts (e.g. the waitlist success card). */
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+    /* Never trap scroll for users who opt out of motion. */
+    scroll-snap-type: none;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .glow-pulse {
+    animation: none !important;
+  }
+  .animate-fade-up {
+    animation: none !important;
+  }
 }

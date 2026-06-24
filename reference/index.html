@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iqama — Guard your prayer from the scroll</title>
+  <meta name="description" content="Iqama blocks distracting apps during the five daily prayer windows until you've prayed. Private, local-only, iOS. Join the waitlist." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Iqama — Guard your prayer from the scroll" />
+  <meta property="og:description" content="Your phone locks the distractions during each salah, and opens again once you've prayed. Private by design. Join the waitlist." />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts: Lora (headings) + Raleway (body) per DESIGN.md -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            green: { 900: '#0B2F2B', 800: '#0E3B36', 700: '#13534B', 600: '#1E4A3F' },
+            amber: { 500: '#E89A2C', 400: '#FFB546', 300: '#FFC95E' },
+            bronze: { 600: '#A86E33' },
+            cream: { DEFAULT: '#F4EBD8', muted: '#C9C2B2' },
+            ink: '#0B2F2B',
+          },
+          fontFamily: {
+            serif: ['Lora', 'serif'],
+            sans: ['Raleway', 'sans-serif'],
+          },
+          letterSpacing: { eyebrow: '0.25em' },
+          maxWidth: { content: '1120px' },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body { background-color: #0B2F2B; }
+
+    /* Hero background: radial green depth + soft amber glow arc (from the logo) */
+    .hero-bg {
+      background:
+        radial-gradient(60% 50% at 50% 30%, rgba(232,154,44,0.10) 0%, rgba(232,154,44,0) 60%),
+        radial-gradient(circle at 50% 35%, #13534B 0%, #0E3B36 55%, #0B2F2B 100%);
+    }
+    .amber-text-gradient {
+      background: linear-gradient(90deg, #D9791F 0%, #FFC95E 50%, #D9791F 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .cta-amber {
+      background: linear-gradient(180deg, #FFB546 0%, #E89A2C 100%);
+      box-shadow: 0 0 24px rgba(232,154,44,0.35);
+    }
+    .cta-amber:hover { background: linear-gradient(180deg, #FFC95E 0%, #FFB546 100%); }
+
+    /* The amber arc motif from the logo */
+    .arc {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      width: 520px; max-width: 80vw; height: 2px; border-radius: 999px;
+      background: linear-gradient(90deg, rgba(217,121,31,0) 0%, #FFC95E 50%, rgba(217,121,31,0) 100%);
+      filter: blur(0.3px); opacity: 0.85;
+    }
+    .arc::after {
+      content: ''; position: absolute; inset: -6px 0; border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,201,94,0) 0%, rgba(255,201,94,0.45) 50%, rgba(255,201,94,0) 100%);
+      filter: blur(8px);
+    }
+
+    /* Reveal on scroll (ease-out, ≤300ms). Only hidden once JS marks the page ready,
+       so content is always visible if JS is slow or disabled. */
+    .js-ready .reveal { opacity: 0; transform: translateY(16px); transition: opacity .4s ease-out, transform .4s ease-out; }
+    .js-ready .reveal.in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .glow-pulse { animation: none !important; }
+    }
+
+    .glow-pulse { animation: glow 7s ease-in-out infinite; }
+    @keyframes glow { 0%,100% { opacity: 0.65; } 50% { opacity: 1; } }
+  </style>
+</head>
+
+<body class="font-sans text-cream antialiased selection:bg-amber-500/30">
+
+  <!-- Skip link -->
+  <a href="#waitlist" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded-full focus:bg-amber-500 focus:px-4 focus:py-2 focus:text-ink focus:font-semibold">Skip to waitlist</a>
+
+  <!-- ============ NAV (floating, inset) ============ -->
+  <header class="fixed inset-x-0 top-4 z-20 px-4">
+    <nav class="mx-auto flex max-w-content items-center justify-between rounded-full border border-green-600/60 bg-green-800/70 px-5 py-3 backdrop-blur-md">
+      <a href="#top" class="flex items-center gap-2 font-serif text-lg font-600 text-cream">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 14c4-5 6-6 9-6s5 1 9 6" stroke="#FFC95E" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M4 17c3.5-4 5-5 8-5s4.5 1 8 5" stroke="#E89A2C" stroke-width="1.4" stroke-linecap="round" opacity="0.8"/>
+        </svg>
+        Iqama
+      </a>
+      <a href="#waitlist" class="cursor-pointer rounded-full border border-amber-500 px-4 py-2 text-sm font-600 text-amber-400 transition-colors duration-200 hover:bg-amber-500 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-green-800">
+        Join the waitlist
+      </a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero-bg relative overflow-hidden px-4 pt-40 pb-28 md:pt-48 md:pb-36">
+      <div class="arc glow-pulse top-28 md:top-32" aria-hidden="true"></div>
+
+      <div class="relative mx-auto max-w-content text-center">
+        <p class="reveal mb-6 text-xs font-600 uppercase tracking-eyebrow text-amber-400/90">Built for the five</p>
+
+        <h1 class="reveal mx-auto max-w-3xl font-serif text-4xl font-600 leading-[1.12] text-cream sm:text-5xl md:text-6xl">
+          Don't let the scroll<br class="hidden sm:block" />
+          steal your <span class="amber-text-gradient">salah</span>.
+        </h1>
+
+        <p class="reveal mx-auto mt-6 max-w-xl text-lg leading-relaxed text-cream-muted">
+          When each prayer window opens, Iqama quietly locks the apps that pull you away — and opens them again once you've prayed. A small wall between you and the distraction, five times a day.
+        </p>
+
+        <!-- Email capture (primary conversion) -->
+        <div id="waitlist" class="reveal mx-auto mt-10 max-w-md scroll-mt-28">
+          <form id="waitlist-form-hero" class="flex flex-col gap-3 sm:flex-row" novalidate>
+            <label for="email-hero" class="sr-only">Email address</label>
+            <input
+              id="email-hero" name="email" type="email" required autocomplete="email"
+              placeholder="you@email.com"
+              class="h-12 w-full flex-1 rounded-full border border-green-600 bg-green-900/60 px-5 text-cream placeholder:text-cream-muted/70 focus-visible:border-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/60"
+            />
+            <button
+              type="submit"
+              class="cta-amber h-12 cursor-pointer whitespace-nowrap rounded-full px-6 font-700 text-ink transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-green-800 disabled:cursor-not-allowed disabled:opacity-70">
+              Join the waitlist
+            </button>
+          </form>
+          <p data-form-status class="mt-3 min-h-5 text-sm text-amber-300" role="status" aria-live="polite"></p>
+          <p class="mt-1 text-xs text-cream-muted/80">iOS &middot; Private by design &middot; No spam, ever.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ THE RECKONING / DUTY ============ -->
+    <section class="px-4 py-24 md:py-32">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="reveal mb-5 text-xs font-600 uppercase tracking-eyebrow text-amber-400/80">The quiet cost</p>
+        <h2 class="reveal font-serif text-3xl font-500 leading-snug text-cream md:text-4xl">
+          How many prayers slipped away<br class="hidden sm:block" /> while the screen kept pulling?
+        </h2>
+        <p class="reveal mx-auto mt-6 max-w-xl text-lg leading-relaxed text-cream-muted">
+          The adhān calls, and "just one more minute" becomes a missed window. It isn't a lack of faith — it's a notification, a feed, a thumb that keeps moving. The duty is real, and so is the distraction sitting in your pocket. Iqama simply puts the distraction down, until you've stood for the prayer.
+        </p>
+
+        <!-- Ayah (approved: Qur'an 4:103, Sahih International) -->
+        <figure class="reveal mx-auto mt-12 max-w-xl border-t border-green-600/70 pt-10">
+          <blockquote class="font-serif text-2xl italic leading-relaxed text-cream md:text-3xl">
+            &ldquo;Indeed, prayer has been decreed upon the believers a decree of specified times.&rdquo;
+          </blockquote>
+          <figcaption class="mt-4 text-sm font-600 uppercase tracking-eyebrow text-amber-400/90">
+            Qur'an 4:103
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="px-4 py-24 md:py-28">
+      <div class="mx-auto max-w-content">
+        <div class="mx-auto mb-16 max-w-2xl text-center">
+          <p class="reveal mb-4 text-xs font-600 uppercase tracking-eyebrow text-amber-400/80">How it works</p>
+          <h2 class="reveal font-serif text-3xl font-500 text-cream md:text-4xl">Three steps. Five times a day.</h2>
+        </div>
+
+        <ol class="grid gap-6 md:grid-cols-3">
+          <!-- Step 1 -->
+          <li class="reveal rounded-xl border border-green-600 bg-green-700/50 p-7">
+            <div class="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-full bg-green-900/60 text-amber-400" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="font-serif text-xl text-cream">The window opens</h3>
+            <p class="mt-2 text-cream-muted">Prayer times are calculated on-device from your location. When a salah enters, the apps you chose lock.</p>
+          </li>
+          <!-- Step 2 -->
+          <li class="reveal rounded-xl border border-green-600 bg-green-700/50 p-7">
+            <div class="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-full bg-green-900/60 text-amber-400" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="18" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M9 12.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="font-serif text-xl text-cream">&ldquo;Did you pray?&rdquo;</h3>
+            <p class="mt-2 text-cream-muted">A calm shield meets you instead of the feed. Pray with presence — there's a free five-minute escape hatch if you truly need it.</p>
+          </li>
+          <!-- Step 3 -->
+          <li class="reveal rounded-xl border border-green-600 bg-green-700/50 p-7">
+            <div class="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-full bg-green-900/60 text-amber-400" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.4 5 5.6.6-4 4 1 5.4L12 15.8 6.9 18l1-5.4-4-4L9.6 8 12 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="font-serif text-xl text-cream">&ldquo;I prayed&rdquo; — and the streak grows</h3>
+            <p class="mt-2 text-cream-muted">Confirm, and your apps unlock. Each day you keep the five builds a quiet streak — a record kept only for you.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ WHY IT'S DIFFERENT ============ -->
+    <section class="px-4 py-24 md:py-28">
+      <div class="mx-auto max-w-content">
+        <div class="mx-auto mb-16 max-w-2xl text-center">
+          <p class="reveal mb-4 text-xs font-600 uppercase tracking-eyebrow text-amber-400/80">Why Iqama</p>
+          <h2 class="reveal font-serif text-3xl font-500 text-cream md:text-4xl">Built to be trusted with your prayer.</h2>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          <!-- Privacy (lead) -->
+          <div class="reveal rounded-xl border border-green-600 bg-green-700/50 p-7">
+            <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-green-900/60 text-amber-400" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="font-serif text-xl text-cream">Private by design</h3>
+            <p class="mt-2 text-cream-muted">No accounts, no cloud, no tracking. Everything stays on your device. Your prayer is between you and Allah — not us.</p>
+          </div>
+          <!-- Prayer times -->
+          <div class="reveal rounded-xl border border-green-600 bg-green-700/50 p-7">
+            <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-green-900/60 text-amber-400" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M5 14c2-3 12-3 14 0" stroke="currentColor" stroke-width="1.4"/><path d="M12 3v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="font-serif text-xl text-cream">Accurate, your way</h3>
+            <p class="mt-2 text-cream-muted">Computed locally with the method you follow — MWL, ISNA, Egyptian or Umm al-Qura — plus Shafi or Hanafi for Asr.</p>
+          </div>
+          <!-- Streak -->
+          <div class="reveal rounded-xl border border-green-600 bg-green-700/50 p-7">
+            <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-green-900/60 text-amber-400" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4c2 3 1 4 1 5 1-.5 2-2 2-3 2 2 3 4 3 7a6 6 0 11-12 0c0-3 3-5 4-7 1 2 1 3 2 3 0-2-1-3 0-5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="font-serif text-xl text-cream">A streak that's yours</h3>
+            <p class="mt-2 text-cream-muted">Keep at least one prayer a day and watch the days add up — gentle momentum toward a steadier habit.</p>
+          </div>
+          <!-- Escape hatch -->
+          <div class="reveal rounded-xl border border-green-600 bg-green-700/50 p-7">
+            <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-green-900/60 text-amber-400" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M9 9h6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 9l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="font-serif text-xl text-cream">No prison, just a pause</h3>
+            <p class="mt-2 text-cream-muted">Life happens. A free five-minute unlock is always there, and it never breaks your streak. Conviction, not coercion.</p>
+          </div>
+        </div>
+
+        <p class="reveal mx-auto mt-10 max-w-xl text-center text-sm text-cream-muted/80">
+          Honest about v1: iPhone only (iOS 16+), and it runs on a physical device. No Android, notifications, or cloud sync yet.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ CLOSING WAITLIST CTA ============ -->
+    <section class="px-4 pb-28 pt-12">
+      <div class="reveal mx-auto max-w-2xl overflow-hidden rounded-2xl border border-green-600 bg-gradient-to-b from-green-700/70 to-green-800 p-10 text-center md:p-14">
+        <h2 class="font-serif text-3xl font-500 text-cream md:text-4xl">Be there for the first five.</h2>
+        <p class="mx-auto mt-4 max-w-md text-cream-muted">
+          We'll send one email when Iqama is ready — nothing else. Guard your prayer from the scroll, in shā' Allah.
+        </p>
+
+        <form id="waitlist-form-foot" class="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row" novalidate>
+          <label for="email-foot" class="sr-only">Email address</label>
+          <input
+            id="email-foot" name="email" type="email" required autocomplete="email"
+            placeholder="you@email.com"
+            class="h-12 w-full flex-1 rounded-full border border-green-600 bg-green-900/60 px-5 text-cream placeholder:text-cream-muted/70 focus-visible:border-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/60"
+          />
+          <button
+            type="submit"
+            class="cta-amber h-12 cursor-pointer whitespace-nowrap rounded-full px-6 font-700 text-ink transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-green-800 disabled:cursor-not-allowed disabled:opacity-70">
+            Join the waitlist
+          </button>
+        </form>
+        <p data-form-status class="mt-3 min-h-5 text-sm text-amber-300" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="border-t border-green-600/50 px-4 py-10">
+    <div class="mx-auto flex max-w-content flex-col items-center justify-between gap-4 sm:flex-row">
+      <span class="font-serif text-cream">Iqama</span>
+      <span class="text-sm text-cream-muted/80">iOS &middot; local-only &middot; no tracking</span>
+      <span class="text-sm text-cream-muted/60">&copy; 2026 Iqama</span>
+    </div>
+  </footer>
+
+  <script>
+    // ---- Reveal on scroll (respects reduced motion via CSS) ----
+    (function () {
+      // Opt the page into the hidden-until-revealed state only now that JS runs.
+      document.documentElement.classList.add('js-ready');
+      var els = document.querySelectorAll('.reveal');
+      function revealAll() { els.forEach(function (e) { e.classList.add('in'); }); }
+
+      if (!('IntersectionObserver' in window)) { revealAll(); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(function (e) { io.observe(e); });
+
+      // Safety net: never leave content hidden if something stalls the observer.
+      window.setTimeout(revealAll, 2500);
+    })();
+
+    // ---- Waitlist form (front-end only, no backend) ----
+    function wireForm(form) {
+      if (!form) return;
+      var status = form.parentElement.querySelector('[data-form-status]');
+      var input = form.querySelector('input[type=email]');
+      var button = form.querySelector('button[type=submit]');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        status.textContent = '';
+        status.className = status.className.replace(/text-(amber-300|red-300)/g, '') + ' text-amber-300';
+
+        if (!input.checkValidity() || !input.value.trim()) {
+          status.className = status.className.replace('text-amber-300', 'text-red-300');
+          status.textContent = 'Please enter a valid email address.';
+          input.focus();
+          return;
+        }
+
+        // Simulate async submit (no backend wired yet)
+        button.disabled = true;
+        var label = button.textContent;
+        button.textContent = 'Joining…';
+
+        window.setTimeout(function () {
+          form.reset();
+          button.disabled = false;
+          button.textContent = label;
+          status.textContent = "You're on the list — we'll be in touch, in shā' Allah.";
+          // NOTE: replace this block with a real POST to your waitlist endpoint when ready.
+        }, 600);
+      });
+    }
+    ['waitlist-form-hero', 'waitlist-form-foot'].forEach(function (id) { wireForm(document.getElementById(id)); });
+  </script>
+</body>
+</html>
