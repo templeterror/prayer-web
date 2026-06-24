@@ -20,20 +20,20 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://iqama-prayer.vercel.app"
   ),
-  title: "Iqama — Guard your prayer from the scroll",
+  title: "Iqama — Your last call to prayer",
   description:
-    "Iqama blocks distracting apps during the five daily prayer windows until you've prayed. iOS. Join the waitlist.",
+    "App blocker that works for your faith.",
   openGraph: {
-    title: "Iqama — Guard your prayer from the scroll",
+    title: "Iqama — Your last call to prayer",
     description:
-      "Your phone locks the distractions during each salah, and opens again once you've prayed. Join the waitlist.",
+      "App blocker that works for your faith.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Iqama — Guard your prayer from the scroll",
+    title: "Iqama — Your last call to prayer",
     description:
-      "Your phone locks the distractions during each salah, and opens again once you've prayed. Join the waitlist.",
+      "App blocker that works for your faith.",
   },
 };
 
