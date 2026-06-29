@@ -1,7 +1,7 @@
 const STEPS = [
   {
     title: "The window opens",
-    body: "Prayer times are calculated on-device from your location. When a salah enters, the apps you chose lock.",
+    body: "Prayer times are calculated on-device. When its time, the apps you chose lock.",
     icon: (
       <>
         <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
@@ -10,8 +10,8 @@ const STEPS = [
     ),
   },
   {
-    title: "“Did you pray?”",
-    body: "A calm shield meets you instead of the feed. Pray with presence — there's a free five-minute escape hatch if you truly need it.",
+    title: "The gatekeeper",
+    body: "Pray with presence. There's a free five-minute escape hatch if you truly need it.",
     icon: (
       <>
         <rect x="5" y="3" width="14" height="18" rx="3" stroke="currentColor" strokeWidth="1.6" />
@@ -20,8 +20,8 @@ const STEPS = [
     ),
   },
   {
-    title: "“I prayed” — and the streak grows",
-    body: "Confirm, and your apps unlock. Each day you keep the five builds a quiet streak — a record kept only for you.",
+    title: "Your Data",
+    body: "Track how your commitment to deen is improving over time.",
     icon: (
       <path
         d="M12 3l2.4 5 5.6.6-4 4 1 5.4L12 15.8 6.9 18l1-5.4-4-4L9.6 8 12 3z"

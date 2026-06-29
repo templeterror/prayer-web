@@ -3,7 +3,7 @@ import MissedPrayersCalculatorMobile from "./MissedPrayersCalculatorMobile";
 
 export default function Reckoning() {
   return (
-    <section className="snap-panel flex flex-col justify-center px-4 pb-16 pt-24 sm:py-24 md:py-32">
+    <section id="reckoning" className="snap-panel flex scroll-mt-24 flex-col justify-center px-4 pb-16 pt-24 sm:py-24 md:py-32">
       <div className="mx-auto max-w-content">
         <div className="mx-auto max-w-2xl text-center">
           <p className="reveal mb-5 text-xs font-semibold uppercase tracking-eyebrow text-amber-700">
