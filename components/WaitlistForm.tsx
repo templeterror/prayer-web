@@ -90,7 +90,7 @@ export default function WaitlistForm({ variant }: { variant: "hero" | "footer" }
       setEmail("");
       setStatus({
         kind: "success",
-        message: "You're on the list — we'll be in touch, in shā' Allah.",
+        message: "You're on the list, we'll be in touch.",
       });
     } catch (err) {
       setStatus({
@@ -125,7 +125,7 @@ export default function WaitlistForm({ variant }: { variant: "hero" | "footer" }
             </svg>
             {status.message}
           </p>
-          <p className="mt-1 text-sm text-green-700/60">One email when Iqama is live — nothing else.</p>
+          <p className="mt-1 text-sm text-green-700/60">One email when Iqama is live.</p>
         </div>
       </div>
     );
@@ -138,16 +138,10 @@ export default function WaitlistForm({ variant }: { variant: "hero" | "footer" }
           Email address
         </label>
 
-        {/* func-style JOINED CAPSULE: the input and button live in one rounded
-            container — field on top, solid button flush below, no gap. The whole
-            block reads as a single, obvious, easy-to-tap control. */}
-        <div
-          className={`overflow-hidden rounded-3xl border-2 bg-white shadow-sm transition ${
-            isError
-              ? "border-red-400 focus-within:border-red-500 focus-within:ring-4 focus-within:ring-red-500/15"
-              : "border-green-600/20 focus-within:border-amber-500 focus-within:ring-4 focus-within:ring-amber-500/25"
-          }`}
-        >
+        {/* NORMAL INLINE FORM: a distinct bordered field and a separate amber
+            button. Side-by-side on sm+ (input grows, button hugs its label),
+            stacked full-width on narrow mobile. */}
+        <div className="flex flex-col gap-3 sm:flex-row">
           <input
             id={inputId}
             name="email"
@@ -165,14 +159,16 @@ export default function WaitlistForm({ variant }: { variant: "hero" | "footer" }
               // Typing clears the error so the red doesn't linger while they fix it.
               if (isError) setStatus({ kind: "idle", message: "" });
             }}
-            className="h-14 w-full bg-transparent px-6 text-base text-green-800 outline-none placeholder:text-green-700/45 disabled:opacity-60"
+            className={`h-14 w-full rounded-2xl border-2 bg-white px-5 text-base text-green-800 shadow-sm outline-none transition placeholder:text-green-700/45 disabled:opacity-60 sm:flex-1 ${
+              isError
+                ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-500/15"
+                : "border-green-600/20 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/25"
+            }`}
           />
-          {/* divider between the field and the button, like func's seam */}
-          <div className="h-px bg-green-600/15" aria-hidden="true" />
           <button
             type="submit"
             disabled={submitting}
-            className="cta-amber block h-14 w-full cursor-pointer whitespace-nowrap px-6 font-bold text-ink transition-[transform,filter] duration-200 active:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-700 disabled:cursor-not-allowed disabled:opacity-70"
+            className="cta-amber h-14 w-full shrink-0 cursor-pointer whitespace-nowrap rounded-2xl px-7 font-bold text-ink shadow-sm transition-[transform,filter] duration-200 active:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-700 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
           >
             {submitting ? "Joining…" : "Join the waitlist"}
           </button>

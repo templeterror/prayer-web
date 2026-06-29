@@ -1,18 +1,18 @@
 const STEPS = [
   {
     n: "01",
-    lead: "Everything is engineered for your attention.",
-    body: "Infinite feeds, notifications, autoplay — every detail is tuned by teams of people to keep you scrolling a little longer.",
+    lead: "Your attention is sacred.",
+    body: "Infinite feeds, notifications, autoplay. Every detail is tuned to keep you scrolling.",
   },
   {
     n: "02",
     lead: "Willpower alone is not enough.",
-    body: "You are one person against giants whose business model is your attention. Resolve fades; their systems don't.",
+    body: "You are one person against giants whose business model is your attention.",
   },
   {
     n: "03",
     lead: "Friction is the answer.",
-    body: "Iqama puts a deliberate wall between you and the distraction at prayer time. Protecting your attention for your deen is the best investment you can make.",
+    body: "Iqama puts a deliberate wall between you and procrastination.",
     highlight: true,
   },
 ];
@@ -51,7 +51,9 @@ export default function WhyDifferent() {
               <li
                 key={step.n}
                 className={`reveal flex gap-4 rounded-xl p-4 ${
-                  step.highlight ? "bg-amber-400/10" : "border border-green-600/20"
+                  step.highlight
+                    ? "bg-amber-400/10"
+                    : "border border-green-600/20"
                 }`}
               >
                 <span
@@ -63,12 +65,25 @@ export default function WhyDifferent() {
                   {step.n}
                 </span>
                 <div className="min-w-0">
-                  <p className="font-serif text-lg leading-snug text-green-800">{step.lead}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-green-700/80">{step.body}</p>
+                  <p className="font-serif text-lg leading-snug text-green-800">
+                    {step.lead}
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-green-700/80">
+                    {step.body}
+                  </p>
                 </div>
               </li>
             ))}
           </ol>
+          <p className="reveal mt-6 text-center text-sm leading-relaxed text-green-700/80">
+            Protecting your attention for your deen is the best investment you can make.{" "}
+            <a
+              href="#waitlist"
+              className="font-semibold text-amber-700 underline decoration-amber-700/40 underline-offset-4 transition hover:decoration-amber-700"
+            >
+              Join the waitlist
+            </a>
+          </p>
         </div>
       </section>
 
@@ -92,15 +107,32 @@ export default function WhyDifferent() {
                 >
                   {step.n}
                 </span>
-                <div className={step.highlight ? "rounded-xl bg-amber-400/10 p-5 sm:p-6" : ""}>
+                <div
+                  className={
+                    step.highlight
+                      ? "rounded-xl bg-amber-400/10 p-5 sm:p-6"
+                      : ""
+                  }
+                >
                   <p className="font-serif text-lg leading-snug text-green-800 sm:text-xl md:text-2xl">
                     {step.lead}
                   </p>
-                  <p className="mt-3 leading-relaxed text-green-700/80">{step.body}</p>
+                  <p className="mt-3 leading-relaxed text-green-700/80">
+                    {step.body}
+                  </p>
                 </div>
               </li>
             ))}
           </ol>
+          <p className="reveal mx-auto mt-10 max-w-3xl text-center leading-relaxed text-green-700/80">
+            Protecting your attention for your deen is the best investment you can make.{" "}
+            <a
+              href="#waitlist"
+              className="font-semibold text-amber-700 underline decoration-amber-700/40 underline-offset-4 transition hover:decoration-amber-700"
+            >
+              Join the waitlist
+            </a>
+          </p>
         </div>
       </section>
     </>
