@@ -62,6 +62,7 @@ function StepIcon({ icon, className = "" }: { icon: React.ReactNode; className?:
 export default function HowItWorks() {
   return (
     <>
+      <div id="how-it-works" aria-hidden="true" className="scroll-mt-24" />
       {/* MOBILE (<640px): one full-screen snap panel holding the header + all
           three steps as compact stacked rows, sized to fit a single screen. */}
       <section className="snap-panel flex flex-col justify-center px-5 pb-10 pt-24 sm:hidden">
@@ -84,7 +85,7 @@ export default function HowItWorks() {
                   <StepIcon icon={step.icon} />
                 </span>
                 <div className="min-w-0">
-                  <h3 className="font-serif text-lg leading-snug text-green-800">
+                  <h3 className="font-serif text-lg font-medium leading-snug text-green-800">
                     <span className="text-amber-700/80 tabular-nums">{i + 1}.</span> {step.title}
                   </h3>
                   <p className="mt-1 text-sm leading-relaxed text-green-700/80">{step.body}</p>
@@ -103,7 +104,7 @@ export default function HowItWorks() {
             {STEPS.map((step) => (
               <li key={step.title} className="reveal rounded-xl border border-green-600/25 bg-white/70 p-6 sm:p-7">
                 <StepIcon icon={step.icon} className="mb-5" />
-                <h3 className="font-serif text-xl text-green-800">{step.title}</h3>
+                <h3 className="font-serif text-xl font-medium text-green-800">{step.title}</h3>
                 <p className="mt-2 text-green-700/80">{step.body}</p>
               </li>
             ))}

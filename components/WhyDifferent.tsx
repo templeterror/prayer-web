@@ -34,6 +34,7 @@ function SectionHeading() {
 export default function WhyDifferent() {
   return (
     <>
+      <div id="why" aria-hidden="true" className="scroll-mt-24" />
       {/* MOBILE (<640px): one full-screen snap panel holding the header + all
           three points as compact numbered rows, sized to fit a single screen. */}
       <section className="snap-panel flex flex-col justify-center px-5 pb-10 pt-24 sm:hidden">
@@ -65,7 +66,7 @@ export default function WhyDifferent() {
                   {step.n}
                 </span>
                 <div className="min-w-0">
-                  <p className="font-serif text-lg leading-snug text-green-800">
+                  <p className="font-serif text-lg font-medium leading-snug text-green-800">
                     {step.lead}
                   </p>
                   <p className="mt-1 text-sm leading-relaxed text-green-700/80">
@@ -114,7 +115,7 @@ export default function WhyDifferent() {
                       : ""
                   }
                 >
-                  <p className="font-serif text-lg leading-snug text-green-800 sm:text-xl md:text-2xl">
+                  <p className="font-serif text-lg font-medium leading-snug text-green-800 sm:text-xl md:text-2xl">
                     {step.lead}
                   </p>
                   <p className="mt-3 leading-relaxed text-green-700/80">
