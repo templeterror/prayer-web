@@ -24,35 +24,41 @@ The app is **pre-launch** — no users, reviews, or social proof yet. Conversion
 
 ## 2. Brand foundation
 
-Two core colors carry the brand, taken from the logos: **deep pine green** and **warm amber/gold**. Mood: spiritual but not preachy — calm, modern, habit-focused. **Dark-first**, warm gold as the single accent. Star ratings render in gold (aligns naturally with our amber).
+Two core colors carry the brand, taken from the logos: **deep pine green** and **warm amber/gold**. Mood: spiritual but not preachy — calm, modern, habit-focused. **Light-first:** warm cream surfaces with deep-green ink, warm gold as the single accent. Star ratings render in gold (aligns naturally with our amber).
+
+> **Theme note:** the shipped landing page is **light** (cream background, deep-green text). The green tokens are the *ink and structure* color, not the page background; the cream tokens are the *surface*, not the text. Values below match `app/globals.css` `@theme`.
 
 ### Color palette
 
 #### Core
 | Token | Hex | Use |
 |-------|-----|-----|
-| `--green-900` | `#0B2F2B` | Deepest background, footer |
-| `--green-800` | `#0E3B36` | **Primary background** (matches Logo_1) |
-| `--green-700` | `#13534B` | Elevated surfaces, cards |
-| `--green-600` | `#1E4A3F` | Borders, dividers on dark |
-| `--amber-500` | `#E89A2C` | **Primary accent / CTA** (App Store button, links, glow, stars) |
-| `--amber-400` | `#FFB546` | Hover / brighter accent |
-| `--amber-300` | `#FFC95E` | Glow core, highlights |
-| `--bronze-600` | `#A86E33` | Secondary warm tone (from Logo_2) |
+| `--green-900` | `#0B2F2B` | Darkest ink, footer text |
+| `--green-800` | `#0E3B36` | **Primary text / ink** (matches Logo_1) |
+| `--green-700` | `#13534B` | Secondary text, slider track base |
+| `--green-600` | `#1E4A3F` | Borders, dividers, card outlines |
+| `--amber-700` | `#8F5207` | Eyebrows, inline links, underline text on cream |
+| `--amber-600` | `#CF7F1D` | Amber text-gradient stop, slider focus ring |
+| `--amber-500` | `#E89A2C` | **Primary accent / CTA** (button, links, glow, stars) |
+| `--amber-400` | `#FFB546` | CTA fill / hover, brighter accent |
+| `--amber-300` | `#FFC95E` | CTA fill top, glow core, highlights |
+| `--bronze-600` | `#A86E33` | Secondary warm tone (from Logo_2), decorative only |
 
-#### Neutrals (on dark)
+#### Surfaces & neutrals (on light)
 | Token | Hex | Use |
 |-------|-----|-----|
-| `--cream` | `#F4EBD8` | Primary text on dark |
-| `--cream-muted` | `#C9C2B2` | Secondary text, captions |
+| `--cream` | `#FAF4E8` | **Primary page background** |
+| `--cream-muted` | `#EFE6D3` | Slightly deeper cream wash |
 | `--ink` | `#0B2F2B` | Text on amber buttons |
+| (cards) | `white / white-70` | Elevated card surfaces over cream |
 
-> **Contrast note:** `--cream` on `--green-800` and `--ink` on `--amber-500` both clear WCAG AA (4.5:1). Never use `--bronze-600` for body text on dark — decorative only.
+> **Contrast note:** `--green-800` on `--cream` and `--ink` on `--amber-500` both clear WCAG AA (4.5:1). Secondary text uses `--green-700` at reduced opacity. Never use `--bronze-600` for body text — decorative only.
 
 #### Gradients
-- **Amber glow** (hero arc / accent): `linear-gradient(90deg, #D9791F 0%, #FFC95E 50%, #D9791F 100%)`
-- **Background depth**: `radial-gradient(circle at 50% 35%, #13534B 0%, #0E3B36 55%, #0B2F2B 100%)`
-- **CTA button**: `linear-gradient(180deg, #FFB546 0%, #E89A2C 100%)`
+Defined once in `globals.css` as CSS variables built from the amber tokens — never re-hardcode the stops:
+- **`--gradient-amber-fill`** (CTA button, slider thumbs): `linear-gradient(180deg, amber-300 0%, amber-400 100%)`
+- **`--gradient-amber-text`** (amber-on-cream headline word, e.g. "salah"): `linear-gradient(90deg, amber-600 0%, amber-500 50%, amber-600 100%)` — intentionally darker than the fill for contrast on cream
+- **Hero background**: warm cream wash + soft gold glow — `radial-gradient(...rgba(255,181,70,0.18)...)` over `radial-gradient(circle at 50% 35%, #FFFAF0 0%, #FAF4E8 55%, #F3EAD6 100%)`
 
 ---
 
@@ -83,7 +89,7 @@ fontFamily: { serif: ['Lora', 'serif'], sans: ['Raleway', 'sans-serif'] }
 - Base unit **8px**. Scale: 4, 8, 16, 24, 32, 48, 64, 96, 128.
 - Max content width: **1120px** (`max-w-6xl`), centered — keep it consistent across every section.
 - Generous vertical rhythm — sections separated by 96–128px. Calm = breathing room.
-- Border radius: `12px` cards, `999px` pills/buttons.
+- Border radius: `12px` (`rounded-xl`) feature/step cards, `16px` (`rounded-2xl`) larger surfaces + the form capsule, `999px` (`rounded-full`) nav pill + slider. Keep to these three steps.
 - **Floating navbar:** inset from edges (`top-4 left-4 right-4`), not flush to `top-0`. Reserve content padding for its height.
 - **z-index scale:** 10 (raised), 20 (sticky nav), 30 (dropdown), 50 (modal). Define once; remember new stacking contexts reset z-index.
 - **Responsive breakpoints to test:** 375 / 768 / 1024 / 1440px. No horizontal scroll on mobile. `<meta viewport>` set.
@@ -94,9 +100,9 @@ fontFamily: { serif: ['Lora', 'serif'], sans: ['Raleway', 'sans-serif'] }
 
 - **Primary CTA (App Store)** — amber-gradient button, `--ink` text, soft glow `0 0 24px rgba(232,154,44,0.35)`, `cursor-pointer`, `transition-colors 200ms`. Disable + show feedback on async.
 - **Secondary CTA** — ghost button: 1px `--amber-500` border, amber text, transparent fill.
-- **Cards** (feature / mechanic blocks) — `--green-700` surface, subtle `--green-600` border, no heavy shadows, `cursor-pointer` if interactive.
-- **Hero** — dark radial background, glowing amber arc motif (from logo), Lora headline, one-line honest subhead, and the primary **email capture form**.
-- **Email capture form** — single `email` input (`h-12`, `sr-only` label + visible placeholder) + amber-gradient submit. Front-end only: on submit → inline success state, with loading/disabled feedback. Repeated above the fold and at the close.
+- **Cards** (feature / mechanic blocks) — white / `white/70` surface over cream, subtle `--green-600/25` border, no heavy shadows, `cursor-pointer` if interactive.
+- **Hero** — warm cream radial background, glowing amber arc motif (from logo), Lora headline (one word in `--gradient-amber-text`), one-line honest subhead, and the primary **email capture form**.
+- **Email capture form** — single `email` input (`h-14`, `sr-only` label + visible placeholder) joined to an amber-gradient submit in one capsule. On submit → inline success card, with loading/disabled feedback and an inline error message on invalid input. Repeated above the fold and at the close.
 - **Ayah block** — one carefully-attributed Qur'anic ayah, set apart typographically (Lora, larger, amber rule or quote mark). Reference shown.
 - **Eyebrows** — uppercase tracked label above each section heading.
 - **Icons** — SVG only (Heroicons / Lucide), 24×24 viewBox, consistent sizing. **No emoji as icons.**
@@ -115,7 +121,7 @@ fontFamily: { serif: ['Lora', 'serif'], sans: ['Raleway', 'sans-serif'] }
 
 ## 7. Accessibility checklist (pre-delivery)
 
-- [ ] Text contrast ≥ 4.5:1 (verified for cream-on-green, ink-on-amber)
+- [ ] Text contrast ≥ 4.5:1 (verified for green-on-cream, ink-on-amber)
 - [ ] Visible focus rings on every interactive element; tab order matches visual order
 - [ ] All meaningful images have alt text; icon-only buttons have `aria-label`
 - [ ] Color is never the only indicator (e.g. stars also show a numeric rating)
