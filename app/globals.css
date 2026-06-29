@@ -28,6 +28,26 @@
   --max-width-content: 1120px;
 }
 
+/* ---- Amber gradients (single source of truth) ----
+   Two stops only, both built from the amber tokens above so the CTA fill,
+   slider thumbs and arc never drift apart:
+   - --gradient-amber-fill: bright button/thumb fill (amber-300 → amber-400)
+   - --gradient-amber-text: darker stops for text-on-cream, which needs more
+     contrast than a fill (amber-600 → amber-500 → amber-600). */
+:root {
+  --gradient-amber-fill: linear-gradient(
+    180deg,
+    var(--color-amber-300) 0%,
+    var(--color-amber-400) 100%
+  );
+  --gradient-amber-text: linear-gradient(
+    90deg,
+    var(--color-amber-600) 0%,
+    var(--color-amber-500) 50%,
+    var(--color-amber-600) 100%
+  );
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -71,18 +91,18 @@ body {
 }
 
 .amber-text-gradient {
-  background: linear-gradient(90deg, #b56a14 0%, #e8902a 50%, #b56a14 100%);
+  background: var(--gradient-amber-text);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .cta-amber {
-  background: linear-gradient(180deg, #ffc95e 0%, #ffb546 100%);
+  background: var(--gradient-amber-fill);
   box-shadow: 0 0 24px rgba(255, 181, 70, 0.4);
 }
 .cta-amber:hover {
-  background: linear-gradient(180deg, #ffd574 0%, #ffc95e 100%);
+  background: linear-gradient(180deg, #ffd574 0%, var(--color-amber-300) 100%);
 }
 
 /* The bright-gold arc motif from the logo */
@@ -134,8 +154,8 @@ body {
   width: 26px;
   height: 26px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #ffc95e 0%, #ffb546 100%);
-  border: 2px solid #faf4e8;
+  background: var(--gradient-amber-fill);
+  border: 2px solid var(--color-cream);
   box-shadow: 0 1px 6px rgba(255, 181, 70, 0.5);
   cursor: pointer;
 }
@@ -143,8 +163,8 @@ body {
   width: 26px;
   height: 26px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #ffc95e 0%, #ffb546 100%);
-  border: 2px solid #faf4e8;
+  background: var(--gradient-amber-fill);
+  border: 2px solid var(--color-cream);
   box-shadow: 0 1px 6px rgba(255, 181, 70, 0.5);
   cursor: pointer;
 }
